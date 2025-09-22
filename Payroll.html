@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<!-- saved from url=(0086)https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>
+	GeniusEAM | Payroll Activity
+</title>
+    <script src="./GeniusEAM _ Payroll Activity_files/jquery.min.js.download"></script>
+    <link href="./GeniusEAM _ Payroll Activity_files/css" rel="stylesheet"><link rel="stylesheet" href="./GeniusEAM _ Payroll Activity_files/font-awesome.min.css"><link rel="stylesheet" href="./GeniusEAM _ Payroll Activity_files/bootstrap.min.css"><link rel="stylesheet" href="./GeniusEAM _ Payroll Activity_files/font-awesome.min.css"><link href="./GeniusEAM _ Payroll Activity_files/newStyle.css" rel="stylesheet"><link rel="stylesheet" href="./GeniusEAM _ Payroll Activity_files/jquery-ui.css">
+    <script src="./GeniusEAM _ Payroll Activity_files/jquery-ui.js.download"></script>
+    <script src="./GeniusEAM _ Payroll Activity_files/sweetalert2.min.js.download"></script>
+    <link rel="stylesheet" href="./GeniusEAM _ Payroll Activity_files/sweetalert2.min.css"><link href="./GeniusEAM _ Payroll Activity_files/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+    <script src="./GeniusEAM _ Payroll Activity_files/bootstrap-multiselect.js.download" type="text/javascript"></script>
+    <script src="./GeniusEAM _ Payroll Activity_files/bootstrap.min.js.download"></script>
+    <script type="text/javascript">
+
+        //Single javascript used for all popup message by Sudipta Manna on 13.03.14
+        function Callsalary(PayslipPageNameDtls, EmployeeID, CompanyID, UserName, FinYear) {
+            debugger;
+            var frame = document.getElementById("frameSubReports");
+            frame.src = PayslipPageNameDtls + "?EmployeeId=" + EmployeeID + "&CompanyID=" + CompanyID + "&MonthName=" + UserName + "&FinYear=" + FinYear;
+            $find('mSubReports').show();
+        }
+        function disableBackButton() {
+            window.history.forward();
+        }
+        setTimeout("disableBackButton()", 0);
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        ////The fourth character informs about the type of holder of the Card.Each assesse is uniquely
+        //C — Company
+        //P — Person
+        //H — HUF(Hindu Undivided Family)
+        //F — Firm
+        //A — Association of Persons (AOP)
+        //T — AOP (Trust)
+        //B — Body of Individuals (BOI)
+        //L — Local Authority
+        //J — Artificial Judicial Person
+        //G — Government 
+        //Allowed forth letter in this list
+        function fnValidatePAN(Obj) {
+            if (Obj == null) Obj = window.event.srcElement;
+            if (Obj.value != "") {
+                ObjVal = Obj.value;
+                var panPat = /^([a-zA-Z]{5})(\d{4})([a-zA-Z]{1})$/;
+                var code = /([C,P,H,F,A,T,B,L,J,G])/;
+                var code_chk = ObjVal.substring(3, 4);
+                if (ObjVal.search(panPat) == -1) {
+                    alert("Invalid Pan No, Pan Number format should be : AOFBP6688A");
+                    $(Obj).val("");
+                    Obj.focus();
+                    return false;
+                }
+                if (code.test(code_chk) == false) {
+                    alert("Invaild PAN Card No.Please Check Fifth letter: Pan Number format should be like: AOFBP6688A");
+                    $(Obj).val("");
+                    Obj.focus();
+                    return false;
+                }
+
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(this).scrollTop(0);
+        });
+
+        //        function CheckOldPwd(txt) {
+        //            debugger;
+        //            if (txt.value != "") {
+
+        //                var x = txt.value;
+        //                //alert(x);
+        //                PageMethods.CheckUserOldPwd(x, CheckUserOldPwdSuccess, CheckUserOldPwdFailed);
+        //            }
+        //        }
+
+
+
+
+        function load_em() {
+            var u = $.cookie("username"); //"USERNAME" COOKIE
+            var p = $.cookie("password"); //"PASSWORD" COOKIE
+
+            $("#username").val(u); //FILLS WITH "USERNAME" COOKIE
+            $("#password").val(p); //FILLS WITH "PASSWORD" COOKIE
+        }
+
+
+
+        function CheckOldPwd(txt) {
+            debugger;
+            if (txt.value != "")
+
+                var x = txt.value;
+
+            $.ajax({
+                type: "POST",
+                url: 'GEAMHome.aspx/CheckUserOldPwd',
+                data: JSON.stringify({ "pwd": x }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (msg) {
+                    debugger;
+                    if (msg.d == 'Invalid Password') {
+                        alert("Old Password is incorrect");
+                        $("#ctl00_txtOldPwd").val("");
+                        $("#ctl00_txtOldPwd").focus();
+                    }
+                    else {
+
+                    }
+
+                },
+                error: function (xhr) {
+
+                    // alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        jQuery(document).ready(function () {
+            debugger;
+            var offset = 550;
+            var duration = 300;
+            jQuery(window).scroll(function () {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.back-to-top').fadeIn(duration);
+                } else {
+                    jQuery('.back-to-top').fadeOut(duration);
+                }
+            });
+
+            jQuery('.back-to-top').click(function (event) {
+                event.preventDefault();
+                jQuery('html, body').animate({ scrollTop: 0 }, duration);
+                return false;
+            })
+        });
+    </script>
+
+    <style>
+        /*::-webkit-scrollbar
+        {
+            width: 8px; 
+            height: 8px; 
+        }
+        ::-webkit-scrollbar-track
+        {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb
+        {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        ::-webkit-scrollbar-thumb
+        {
+            background-color: #0ae;
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+        }*/
+        .back-to-top {
+            margin: 0;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 45px;
+            z-index: 200;
+            display: none;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: rgb(42, 82, 142);
+            line-height: 60px;
+        }
+
+            .back-to-top i {
+                font-size: 30px;
+            }
+
+        footer a.back-to-top:hover {
+            color: #ffffff;
+        }
+
+        .ModalPopupBG {
+            background: black;
+            filter: alpha(opacity=50);
+            opacity: 0.7;
+        }
+
+        .panelToggle{left:225px !important;}
+
+    </style>
+    
+
+
+    <style type="text/css">
+        ul.boxList {
+            margin: 0;
+            padding: 0;
+        }
+
+            ul.boxList li {
+                padding: 7px 0;
+                list-style: circle;
+                font-size: 12px;
+                color: #000000;
+            }
+
+                ul.boxList li span.lab {
+                    float: left;
+                    width: 40%;
+                    font-weight: 700;
+                }
+
+        #myModalPayslip table {
+            margin: 0;
+        }
+
+        .table.vlin > tbody > tr > th {
+            vertical-align: middle;
+        }
+
+        #tbl_ParticulrsComp > tbody > :nth-child(7), :nth-child(11), :nth-child(14), :nth-child(16), :nth-child(17), :nth-child(20), :nth-child(21) {
+            font-weight: bold;
+        }
+    </style>
+
+
+    
+
+
+
+    
+
+    <script type="text/javascript">
+
+        debugger;
+        var res = null;
+
+        function ShowModalCommon(e, f) {
+            debugger;
+            if (e == '4' && f == '6') {
+                $('#myModalPT').modal('show');
+            }
+            else if (e == '10' && f == '6') {
+                $('#myModalPF').modal('show');
+            }
+            else if (e == '6' && f == '6') {
+                $('#myModalESI').modal('show');
+            }
+            else if (e == '1' && f == '4') {
+                $('#myModalCurrentCTCMaster').modal('show');
+            }
+            else if (e == '4' && f == '5') {
+                $('#myModal').modal('show');
+            }
+            else if (e == '8' && f == '5') {
+                $('#myModalReim').modal('show');
+
+            }
+
+        }
+
+
+        function PrintPaySlipCTC() {
+
+            $("#btnPrintCTC").on("click", function () {
+                var divContents1 = $("#delAll2").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>CTC Details</title>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents1);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+        }
+
+        function PrintPaySlipCTCHistory() {
+
+            $("#btnPrintCTCHistory").on("click", function () {
+                var divContents2 = $("#delAll3").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>CTC History Details</title>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents2);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+        }
+
+        function PrintIT() {
+
+            $("#btnPrintIT").on('click', function () {
+                var divContents3 = $("#delAll4").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>Income Tax Declaration</title>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents3);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+        }
+
+
+        $(document).ready(function () {
+            debugger;
+            GetSalaryHistory();
+            GetCurrentCTC();
+            //GetCTCHistory();
+            GetPFData();
+            GetESIData();
+            GetPTData();
+            GetStatInfo();
+            GetReimDetails();
+
+            var apiUrl = $('#hdnApiUrl').val();
+
+            $("#btnPrint").on("click", function () {
+                //debugger;
+                var textMonth = $('#lblMonth').html();
+                var textYear = $('#lblYear').html();
+                var textYearMonth = textMonth + '_' + textYear;
+                //alert(textYearMonth);
+
+                var divContents = $("#dvPayPrint").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>' + 'Payslip_' + textYearMonth + '</title><style type="text/css">body{font-family:Arial; }table{ border-collapse: collapse;font-size:12px; margin:0 auto;}.table-bordered.noBorder > tbody > tr > td{ border:0 !important;}</style>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+
+
+
+            $("#btnPrintReim").on("click", function () {
+                //debugger;
+                //var textMonth = $('#lblMonth').html();
+                //var textYear = $('#lblYear').html();
+                //var textYearMonth = textMonth + '_' + textYear;
+                //alert(textYearMonth);
+
+                var divContents = $("#dvReimPrint").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head><title>' + 'Reimbursement' + '</title><style type="text/css">body{font-family:Arial; }table{ border-collapse: collapse;font-size:12px; margin:0 auto;}.table-bordered.noBorder > tbody > tr > td{ border:0 !important;}</style>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+
+
+
+
+            $(".salHistory").on('change', function () {
+                GetSalaryHistory();
+            });
+
+            $(".ESIDtls").on('change', function () {
+                GetESIData();
+            });
+
+            $(".cpfDtls").on('change', function () {
+                GetPFData();
+            });
+
+            $(".cptax").on('change', function () {
+                GetPTData();
+            });
+
+            $(".clsreim").on('change', function () {
+                GetReimDetails();
+            });
+
+
+            $('.clsitlink').click(function () {
+                //debugger;
+                $('#dvItView').modal('show');
+                GetItViewLeft();
+                return false;
+
+            })
+
+
+            $('.popBankDtls').click(function () {
+                //debugger;                
+
+                if ($('#lblAccNoStat').text() != 'N/A') {
+                    $('#myModalBank').modal('show');
+                    GetBankInfo();
+                    return false;
+                }
+            })
+
+
+
+
+            function GetReimDetails() {
+
+                var reim = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045',
+                    Month: $("#ddlreimMonth option:selected").text() == 'All Month' ? '%' : $("#ddlreimMonth option:selected").text(),
+                    Year: $("#ddlReimYear option:selected").text(),
+                    Option: 1
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    url: $('#hdnApiUrl').val() + 'api/SalaryHistory/GetReimMaster',
+                    data: reim,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        var datareim = JSON.parse(data);
+                        $('#tblReim').empty();
+                        var th = "<tr>"
+                               + "<th><b>Sl No</b></th>"
+                               + "<th><b>Month</b></th>"
+                               + "<th><b>Reim Amount</b></th>"
+                               + "</tr>";
+                        $('#tblReim').append(th);
+
+                        var i = 0;
+                        $.each(datareim, function (key, item) {
+                            //debugger;
+                            i = i + 1;
+                            $('#tblReim').append("<tr>"
+                                + '<td>' + i + '</td>'
+                                + '<td class="clsAEMSalMonth">' + item.MonthName + "</td>"
+                                + "<td><a href=''  class='reimlink' data-yid='" + item.YearID + "' data-empid='" + item.EmployeeID + "' data-mid='" + item.MonthID + "' id='popreim' style='text-decoration:underline;'>" + item.ComponentValue + "</a></td>"
+                                + "</tr>");
+                        });
+
+                        if (i == 0) {
+                            $('#tblReim').append('<tr><td colspan="5">No Records Found</></tr>');
+                        }
+
+                        $('.reimlink').click(function () {
+                            debugger;
+                            var d = {
+                                compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                EmpId: $(this).attr('data-empid'),
+                                Month: $(this).attr('data-mid'),
+                                Year: $(this).attr('data-yid'),
+                                Option: 2
+                            };
+
+                            $.ajax({
+
+                                type: "GET",
+
+                                url: $('#hdnApiUrl').val() + 'api/SalaryHistory/GetReimMaster',
+                                data: d,
+                                crossDomain: true,
+                                dataType: 'jsonp',
+                                success: function (data) {
+                                    debugger;
+                                    res = JSON.parse(data);
+                                    $('#myModalReimSlip').modal('show');
+
+                                    var m = res.Master[0];
+                                    var dtls = res.Details[0];
+                                    $('#lblEmpNameReim').text(m.EmpName);
+                                    $('#lblCodeReim').text(m.Code);
+                                    $('#lblBankNameReim').text(m.BankName);
+                                    $('#lblDOJReim').text(m.DOJ);
+                                    $('#lblDeptReim').text(m.DepartmentName);
+                                    $('#lblLocationReim').text(m.Branch);
+                                    $('#lblDesgReim').text(m.Designation);
+                                    $('#lblPFReim').text(m.PFNumber);
+                                    $('#lblMonthReim').text(m.MonthName);
+                                    $('#lblYearReim').text(dtls.FinYear);
+                                    $('#lblClientNameReim').text(m.Company);
+                                    $('#lblClientOffAddressReim').text(m.Address);
+                                    $('#lblWesiteReim').text(m.WebSite);
+                                    //$('#lblContactNoReim').text(res["ContactNo"]);
+                                    $('#lblUANReim').text(m.UanNo);
+                                    $('#lblESICReim').text(m.ESINumber);
+                                    $('#lblMonthlyNetinwordsReim').html(m.TotalReimWords);
+
+                                    var resSalDtlsReim = res.Details;
+                                    $('#tblSalHeadDtlsReim').empty();
+
+                                    var th = "<tr>"
+                                           + "<th width='70%'><b>Earnings</b></th>"
+                                           + "<th width='30%'><b>Amount</b></th>"
+                                           + "</tr>";
+                                    $('#tblSalHeadDtlsReim').append(th);
+                                    var sumTotalreim = 0;
+                                    $.each(res.Details, function () {
+                                        debugger;
+                                        var tr = '<tr>'
+                                                + '<td width="70%" align="left">' + this.ComponentName + '</td>'
+                                                + '<td width="30%" align="right">' + this.ComponentValue + '</td>'
+                                                 + '</tr>';
+                                        $('#tblSalHeadDtlsReim').append(tr);
+                                        sumTotalreim = (sumTotalreim * 1) + (this.ComponentValue * 1)
+
+                                        $('#lblTotalReim').text(sumTotalreim);
+
+
+
+                                    });
+
+
+                                }
+                            });
+                            return false;
+                        });
+                    }
+                });
+            }
+
+            function GetSalaryHistory() {
+
+                var apiUrl = $('#hdnUrl').val();
+                var UrlSalMasterD = $('#hdnUrlSalMaster').val();
+                var UrlSalDetailsD = $('#hdnUrlSalDetails').val();
+                var UrlSalDedutcionData = $('#hdnUrlSalDeduction').val();
+
+                var d = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045',
+                    Month: $("#ddlSalMonth option:selected").text() == 'All Month' ? '%' : $("#ddlSalMonth option:selected").text(),
+                    Year: $("#ddlSalFinYear option:selected").text()
+                }
+
+                var hdnYear = $("#ddlSalFinYear option:selected").text();
+                $('#hdnYear').val(hdnYear);
+                //debugger;
+
+                $.ajax({
+                    type: "GET",
+                    //url: apiUrl,
+                    url: $('#hdnApiUrl').val() + 'api/SalaryHistory/GetSalHistory',
+                    data: d,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        //debugger;
+                        //console.log(data);
+                        var DataR = JSON.parse(data);
+                        $('#DvPay').show();
+                        $('#PslpDtls').empty();
+                        var th = "<tr>"
+                                + "<th><b>Sl No</b></th>"
+                                + "<th><b>Month</b></th>"
+                                //+ "<th><b>MonthlyGross</b></th>"
+                                + "<th><b>Actual Gross</b></th>"
+                                + "<th><b>Total Deduction</b></th>"
+                                + "<th><b>Monthly Net</b></th>"
+                                + "</tr>";
+                        $('#PslpDtls').append(th);
+                        //alert(DataR["MonthlyNet"]);
+                        var i = 0;
+                        $.each(DataR, function (key, item) {
+                            //debugger;
+                            i = i + 1;
+                            $('#PslpDtls').append("<tr>"
+                                + '<td>' + i + '</td>'
+                                + '<td class="clsAEMSalMonth">' + item.AEMSalMonth + "</td>"
+                                //+ "<td>" + item.MonthlyGross + "</td>"
+                                + '<td class="clsActualGross">' + item.ActualGross.toFixed(2) + "</td>"
+                                + '<td class="clsTotalDeduction">' + item.TotalDeduction.toFixed(2) + "</td>"
+                                + "<td><a href=''  class='poplink' id='pop' style='text-decoration:underline;'>" + item.MonthlyNet + "</a></td>"
+                                + "</tr>");
+
+
+                        });
+
+                        if (i == 0) {
+                            $('#PslpDtls').append('<tr><td colspan="5">No Records Found</></tr>');
+                        }
+
+                        $('.poplink').click(function () {
+                            //debugger;
+                            //=====================Second Ajax Method For Pay Slip Master Data================
+
+                            //alert($(this).closest('tr').find('td:first').text());
+
+                            var hdnMonth = $(this).closest('tr').find('td.clsAEMSalMonth').text();
+                            $('#hdnMonth').val(hdnMonth);
+
+                            var s = {
+                                compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                EmpId: '2070000045',
+                                Month: hdnMonth,
+                                Year: hdnYear
+                            }
+
+                            $.ajax({
+
+                                type: "GET",
+                                //url: UrlSalMasterD,
+                                url: $('#hdnApiUrl').val() + 'api/demo/GetMasterData',
+                                data: s,
+                                crossDomain: true,
+                                dataType: 'jsonp',
+                                success: function (data) {
+                                    debugger;
+                                    res = JSON.parse(data);
+                                    $('#myModalPayslip').modal('show');
+
+                                    $('#lblEmpName').text(res["Name"]);
+                                    $('#lblCode').text(res["Code"]);
+                                    $('#lblBankName').text(res["BankName"] == null ? 'N/A' : res["BankName"]);
+                                    $('#lblDOJ').text(res["DateOfJoining"] == null ? 'N/A' : res["DateOfJoining"]);
+                                    $('#lblDept').text(res["Department"]);
+                                    $('#lblAcNo').text(res["AccountNumber"]);
+                                    $('#lblPaybleDays').text(res["WorkingDays"]);
+                                    $('#lblLocation').text(res["Location"]);
+                                    $('#lblDesg').text(res["Designation"]);
+                                    $('#lblPF').text(res["PFNumber"]);
+                                    $('#lblMonth').text(res["MonthName"]);
+                                    $('#lblYear').text(res["FinYear"]);
+                                    //$('#lblMonthlyGross').text(res["YTDMonthlyGross"]);
+                                    //$('#lblActualGross').text(res["YTDActualGross"]);
+                                    $('#lblMonthlyNet').text(res["YTDMonthlyNet"]);
+                                    //$('#lblTotalDeduction').text(res["YTDTotalDeduction"]);
+                                    $('#lblClientName').text(res["ClientNameFull"]);
+                                    $('#lblClientOffAddress').text(res["ClientOfficeAddress"]);
+                                    $('#lblMonthlyNetinwords').text(res["MonthlyNetInWords"]);
+                                    $('#lblWesite').text(res["WebSite"]);
+                                    $('#lblContactNo').text(res["ContactNo"]);
+                                    $('#lblUAN').text(res["UAN"] == null ? 'N/A' : res["UAN"]);
+                                    $('#lblESIC').text(res["ESIC"] == null ? 'N/A' : res["ESIC"]);
+
+                                    $('#lblPan').text(res["PANNo"] == null ? 'N/A' : res["PANNo"]);
+
+                                    $('#lblArr').text(res["ArrDays"] == null ? '0' : res["ArrDays"]);
+                                    $('#lblBrand').text(res["BrandName"] == null ? 'N/A' : res["BrandName"]);
+                                    //console.log(data);
+
+
+                                    //=========Third Ajax method For PaySlip Salary Details Data======
+
+                                    var saldetails = {
+                                        compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                        EmpId: '2070000045',
+                                        Month: hdnMonth,
+                                        Year: hdnYear
+                                    }
+
+                                    $.ajax({
+
+                                        type: "GET",
+                                        //url: UrlSalDetailsD,
+                                        url: $('#hdnApiUrl').val() + 'api/demo/Getdetailsdata',
+                                        data: saldetails,
+                                        crossDomain: true,
+                                        dataType: 'jsonp',
+                                        success: function (data) {
+                                            //alert(data);
+                                            //console.log(data);
+                                            debugger;
+                                            var resSalDtls = JSON.parse(data);
+                                            var TotalGross = 0, TotalActual = 0;
+
+                                            $('#tblSalHeadDtls').empty();
+                                            $.each(resSalDtls, function (key, item) {
+                                                //debugger;
+                                                $('#tblSalHeadDtls').append("<tr><td width='40%'>" + item.AEMComponentName + "</td>" +
+                                               "<td width='30%' align='right'>" + item.YTDComponentGrossValue.toFixed(2) + "</td>" +
+                                                "<td align='right'>" + item.YTDComponentActualValue.toFixed(2) + "</td>" +
+                                                 "</td></tr>");
+
+                                                TotalGross = (TotalGross * 1) + (item.YTDComponentGrossValue * 1)
+                                                TotalActual = (TotalActual * 1) + (item.YTDComponentActualValue * 1)
+                                            });
+
+                                            //N:B:-Previuosly these values were fetching from DB but due to data discrepancy summation manipulate in page itself
+
+                                            $('#lblMonthlyGross').html(TotalGross.toFixed(2));
+                                            $('#lblActualGross').html(TotalActual.toFixed(2));
+
+                                            //console.log(data);
+                                            //=======Final Method For Employee Salary Deduction Part
+
+                                            var deductiondetails = {
+                                                compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                                EmpId: '2070000045',
+                                                Month: hdnMonth,
+                                                Year: hdnYear
+                                            }
+
+                                            $.ajax({
+
+                                                type: "GET",
+                                                //url: UrlSalDedutcionData,
+                                                url: $('#hdnApiUrl').val() + 'api/demo/GetDeductionData',
+                                                data: deductiondetails,
+                                                crossDomain: true,
+                                                dataType: 'jsonp',
+                                                success: function (data) {
+
+                                                    var resdeductionDtls = JSON.parse(data);
+                                                    var TotalDeduction = 0;
+
+                                                    $('#tblDeduction').empty();
+                                                    $.each(resdeductionDtls, function (key, item) {
+                                                        debugger;
+                                                        $('#tblDeduction').append("<tr><td>" + item.AEMComponentName + "</td>" + "<td align='right'>" + item.YTDComponentActualValue.toFixed(2) + "</td>" +
+
+                                                         "</td></tr>");
+
+                                                        TotalDeduction = (TotalDeduction * 1) + (item.YTDComponentActualValue * 1)
+
+                                                    });
+                                                    $('#lblTotalDeduction').html(TotalDeduction.toFixed(2));
+
+                                                    //console.log(data);
+
+                                                },
+
+                                                failure: function (data) {
+                                                    alert(data.responseText);
+                                                },
+                                                error: function (data) {
+                                                    alert(data.responseText);
+                                                }
+
+                                            });
+
+
+                                            //==============
+
+                                        },
+
+                                        failure: function (data) {
+                                            alert(data.responseText);
+                                        },
+                                        error: function (data) {
+                                            alert(data.responseText);
+                                        }
+                                    });
+
+                                    //============
+
+                                },
+
+                                failure: function (data) {
+                                    alert(data.responseText);
+                                },
+                                error: function (data) {
+                                    alert(data.responseText);
+                                }
+
+                                //===============================
+
+                            });
+                            return false;
+                        });
+
+                        //=======================
+
+                        $('#click_close').click(function () {
+                            $('#campaign-alert').hide();
+
+                        });
+
+                        //console.log(data);
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+
+                });
+
+            }
+
+            //End Of Salary History Function
+
+            // Fetch Current CTC Details
+            function GetCurrentCTC() {
+                //debugger;
+                var UrlCTCMaster = $('#hdnUrlCtcMaster').val();
+                var UrlCTCDetails = $('#hdnUrlCtcDetails').val();
+
+                var ctcdata = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlCTCMaster,
+                    url: $('#hdnApiUrl').val() + 'api/CurrentCTC/GetCurrentCTCMaster',
+                    data: ctcdata,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        var CTCData = JSON.parse(data);
+                        $('#divCCTC').show();
+                        $('#tblCTC').empty();
+                        var th = "<tr>"
+                                + "<th><b>Effective Date</b></th>"
+                                + "<th><b>Monthly CTC</b></th>"
+                                + "</tr>";
+
+                        $('#tblCTC').append(th);
+                        $('#tblCTC').append("<tr>"
+                                + "<td align='center' style='display:none'>" + CTCData["CTCId"] + "</td>"
+                                + "<td align='center'>" + CTCData["EffectedFrom"] + "</td>"
+                                + "<td align='center'><a href=''  class='ctclink' id='cpop' style='text-decoration:underline;'>" + CTCData["MonthlyCTC"] + "</a></td>"
+                        + "</tr>");
+
+
+                        $('#lblNameC').text(CTCData["Name"]);
+                        $('#lblCodeC').text(CTCData["Code"]);
+                        $('#lblPostingC').text(CTCData["Location"]);
+                        $('#lblDojC').text(CTCData["DateOfJoining"]);
+                        $('#lblDeptC').text(CTCData["Department"]);
+                        $('#lblDesgC').text(CTCData["Designation"]);
+                        $('#lblCtceffdate').text(CTCData["EffectedFrom"]);
+                        $('#lblYctc').text(CTCData["AnnualCTC"]);
+
+                        //console.log(data);
+                        //Second Ajax for CTC Details Data
+
+                        $('.ctclink').click(function (e) {
+                            //alert($(this).closest('tr').find('td:first').text());
+                            $('#myModalCTCdetails').modal('show');
+                            debugger;
+
+
+                            var ctcmasterD = {
+                                compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                //EmpId: '2070000045'
+                                CTCId: $(this).closest('tr').find('td:first').text()
+                            }
+
+                            $.ajax({
+                                type: "GET",
+                                //url: UrlCTCDetails,
+                                url: $('#hdnApiUrl').val() + 'api/CurrentCTC/GetCurrentCTCDetails',
+                                data: ctcmasterD,
+                                crossDomain: true,
+                                dataType: 'jsonp',
+                                success: function (data) {
+                                    debugger;
+                                    var DataCTCdtls = JSON.parse(data);
+
+                                    //var sumMonthlyCTC = 0; var sumYearlyCTC = 0;
+
+                                    $('#tbl_ParticulrsComp').empty();
+                                    var th = "<tr>"
+                                   + "<th><b>Particulars</b></th>"
+                                   + "<th><b>Monthly(Rs.)</b></th>"
+                                   + "<th><b>Annual(Rs.)</b></th>"
+                                   + "</tr>";
+
+                                    $('#tbl_ParticulrsComp').append(th);
+                                    $.each(DataCTCdtls, function (key, item) {
+
+                                        $('#tbl_ParticulrsComp').append("<tr>"
+                                            + "<td>" + item.Particulars + "</td>"
+                                            + "<td style='text-align:right;'>" + item.Monthly + "</td>"
+                                            + "<td style='text-align:right;'>" + item.Yearly + "</td>"
+                                            + "</tr>");
+
+                                        //sumMonthlyCTC = (sumMonthlyCTC * 1) + (item.Monthly * 1)
+                                        //sumYearlyCTC = (sumYearlyCTC * 1) + (item.Yearly * 1)
+
+                                    });
+
+                                    //var ftrsum = '<tr>'
+                                    //+ '<td colspan="1" align="center"><b>Total</b></td>'
+                                    //+ '<td style="text-align:right;"><strong>' + sumMonthlyCTC + '</strong></td>'
+                                    //+ '<td style="text-align:right;"><strong>' + sumYearlyCTC + '</strong></td>'
+                                    //+ '</tr>';
+
+                                    //$('#lblYctc').text(sumYearlyCTC);
+
+                                    //$('#tbl_ParticulrsComp').append(ftrsum);
+
+                                    //console.log(data);
+
+                                },
+                                failure: function (data) {
+                                    alert(data.responseText);
+                                },
+                                error: function (data) {
+                                    alert(data.responseText);
+                                }
+
+                            })
+
+                            return false;
+
+                        });
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                });
+            }
+
+            //End Current CTC
+
+            //Start CTC History
+
+
+            function GetCTCHistory() {
+                //debugger;
+                var UrlCTCHistoryMaster = $('#hdnUrlCtcHistoryM').val();
+                var UrlCTCHistoryDetails = $('#hdnUrlCtcHistoryD').val();
+
+
+                var ctcHistorydata = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                //CTC History Master 
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlCTCHistoryMaster,
+                    url: $('#hdnApiUrl').val() + 'api/CurrentCTC/GetCTCHistoryMaster',
+                    data: ctcHistorydata,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        //debugger;
+
+                        var CTCHistoryD = JSON.parse(data);
+
+                        $('#lblNameCH').text(CTCHistoryD[0]["Name"]);
+                        $('#lblCodeCH').text(CTCHistoryD[0]["Code"]);
+                        $('#lblPostingCH').text(CTCHistoryD[0]["CityName"]);
+                        $('#lblDojCH').text(CTCHistoryD[0]["DOJ"]);
+                        $('#lblDeptCH').text(CTCHistoryD[0]["Dept"]);
+                        $('#lblDesgCH').text(CTCHistoryD[0]["Desg"]);
+                        $('#lblClientoffAddCH').text(CTCHistoryD[0]["ClientOfficeAddress"]);
+                        $('#lblClNameCH').text(CTCHistoryD[1]["ClientName"]);
+
+
+                        $('#tblCTCHistory').empty();
+                        var th = "<tr>"
+                                 + "<th><b>Effected From</b></th>"
+                                 + "<th><b>Old CTC</b></th>"
+
+                                 + "</tr>";
+                        $('#tblCTCHistory').append(th);
+
+                        //console.log(data);
+
+                        $.each(CTCHistoryD, function (key, item) {
+
+                            $('#tblCTCHistory').append("<tr><td class='ClsCTCID' align='center' style='display:none'>" + item.CTCID + "</td>" + "<td align='center'>" + item.EffectedFromDate + "</td>" + "<td align='center'><a href='#' class='ctchistorylink' id='chispop' style='text-decoration:underline;'>" + item.MonthlyCTC + "</a></td>" +
+                             "</td></tr>");
+
+                        });
+
+                        //For CTC History
+                        $('.ctchistorylink').click(function (e) {
+
+                            // alert($(this).closest('tr').find('td:first').text());                      
+
+                            var ctcHistoryDtlsD = {
+                                compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                                EmpId: '2070000045',
+                                CTCId: $(this).closest('tr').find('td:first').text()
+                            }
+
+                            //CTC History Details
+
+                            $.ajax({
+
+                                type: "GET",
+                                //url: UrlCTCHistoryDetails,
+                                url: $('#hdnApiUrl').val() + 'api/CurrentCTC/GetCTCHistoryDetails',
+                                data: ctcHistoryDtlsD,
+                                crossDomain: true,
+                                dataType: 'jsonp',
+
+                                success: function (data) {
+                                    debugger;
+                                    var DataCTCHisdtls = JSON.parse(data);
+
+                                    $('#tbl_CTCHistoryParticulrsComp').empty();
+                                    var th = "<tr>"
+                                       + "<th><b>Particulars</b></th>"
+                                       + "<th><b>Monthly(Rs.)</b></th>"
+                                       + "<th><b>Annual(Rs.)</b></th>"
+                                       + "</tr>";
+
+                                    $('#tbl_CTCHistoryParticulrsComp').append(th);
+
+                                    $.each(DataCTCHisdtls, function (key, item) {
+
+                                        $('#tbl_CTCHistoryParticulrsComp').append("<tr><td>" + item.Particulars + "</td>" + "<td>" + item.Monthly + "</td>" + "<td>" + item.Annual + "</td>" +
+                                         "</td></tr>");
+
+                                    });
+
+
+                                    $("#dvCTCHistorypopup").modal('show');
+
+                                    console.log(data);
+                                },
+
+
+
+                                failure: function (data) {
+                                    alert(data.responseText);
+                                },
+                                error: function (data) {
+                                    alert(data.responseText);
+                                }
+
+
+                            })
+
+                            return false;
+                        });
+
+                        //Ends CTC History                              
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+
+            //-------Ends Here-----
+
+
+            // Get Statutory Information
+
+            function GetStatInfo() {
+                //debugger;
+
+                var UrlStatInfo = $('#hdnUrlStatInfo').val();
+
+                var StatInfoD = {
+
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlStatInfo,
+                    url: $('#hdnApiUrl').val() + 'api/Statutory/GetStatInfo',
+                    data: StatInfoD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        //debugger;
+                        var DataStatDtls = JSON.parse(data);
+
+                        $('#lblAccNoStat').text(DataStatDtls["BankAccNo"]);
+                        $('#lblPanStat').text(DataStatDtls["PAN"]);
+                        $('#lblPFNoStat').text(DataStatDtls["PF"]);
+                        $('#lblESINoStat').text(DataStatDtls["ESI"]);
+                        $('#lblAdhar').text(DataStatDtls["AdharNo"] == null ? 'N/A' : DataStatDtls["AdharNo"]);
+
+
+                        //console.log(data);
+
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+
+            //---------Ends Here------
+
+
+            //----------Get ESI Data---------
+
+            function GetESIData() {
+
+                var UrlESI = $('#hdnUrlESI').val();
+
+                var EsiD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045',
+                    Year: $('#ddlESIFinYear option:selected').text(),
+                    Month: $('#ddlESIMonth option:selected').text() == 'All Month' ? '%' : $('#ddlESIMonth option:selected').text()
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlESI,
+                    url: $('#hdnApiUrl').val() + 'api/Statutory/GetESI',
+                    data: EsiD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        var DataESIDtls = JSON.parse(data);
+
+                        $('#dvESIdtls').show();
+                        $('#tbl_ESIDtls').empty();
+                        var th = "<tr>"
+                                + "<th><b>Sl No</b></th>"
+                                + "<th><b>Month</b></th>"
+                                + "<th><b>Permissible</b></th>"
+                                + "<th><b>Employer Contribution (4.75%)</b></th>"
+                                + "<th><b>Employee Contribution (1.75%)</b></th>"
+                                + "</tr>";
+                        $('#tbl_ESIDtls').append(th);
+
+                        var i = 0; var sumMonthlyBasic = 0; var sumEmprcontr = 0; var sumEmpcont1 = 0;
+                        $.each(DataESIDtls, function (key, item) {
+                            i += 1;
+                            $('#tbl_ESIDtls').append("<tr>"
+                             + "<td align='center'>" + i + "</td>"
+                             + "<td align='center'>" + item.AEMSalmonth + "</td>"
+                             + "<td align='center'>" + item.MonthlyGross + "</td>"
+                             + "<td align='center'>" + item.EmployerContribution + "</td>"
+                             + "<td align='center'>" + item.EmployeeContribution + "</td>"
+                             + "</tr>");
+
+                            sumMonthlyBasic = (sumMonthlyBasic * 1) + (item.MonthlyGross * 1)
+                            sumEmprcontr = (sumEmprcontr * 1) + (item.EmployerContribution * 1)
+                            sumEmpcont1 = (sumEmpcont1 * 1) + (item.EmployeeContribution * 1)
+                        });
+
+                        var frow2 = '<tr id="ftrsum">'
+                            + '<td colspan="2" align="center"><b>Total</b></td>'
+                            + '<td align="center"><strong>' + sumMonthlyBasic + '</strong></td>'
+                            + '<td align="center"><strong>' + sumEmprcontr + '</strong></td>'
+                            + '<td align="center"><strong>' + sumEmpcont1 + '</strong></td>'
+                            + '</tr>';
+
+                        $('#tbl_ESIDtls').append(frow2);
+
+                        if (i == 0) {
+                            $('#tbl_ESIDtls').append('<tr><td colspan="5" align="center">No Records Found</></tr>');
+                            $('#ftrsum').hide();
+                        }
+
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+
+            //------ESI Ends Here----
+
+
+            //-------Get PF Data-----------
+            function GetPFData() {
+                //debugger;
+
+                var UrlPF = $('#hdnUrlPF').val();
+
+                var PfD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045',
+                    Year: $('#ddlPFFYear option:selected').text(),
+                    Month: $('#ddlPFMonth option:selected').text() == 'All Month' ? '%' : $('#ddlPFMonth option:selected').text()
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlPF,
+                    url: $('#hdnApiUrl').val() + 'api/Statutory/GetPF',
+                    data: PfD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        // debugger;
+                        var DataPFDtls = JSON.parse(data);
+                        console.log(data);
+
+                        $('#dvPFdtls').show();
+                        $('#tbl_PFDtls').empty();
+                        var th = "<tr>"
+                                + "<th><b>Sl No</b></th>"
+                                + "<th><b>Month</b></th>"
+                                + "<th><b>Permissible</b></th>"
+                                + "<th><b>Employer Contribution - Pension -(8.33%)</b></th>"
+                                + "<th><b>Employer Contribution - PF –(3.67%)</b></th>"
+                                + "<th><b>Employee Contribution (12%)</b></th>"
+                                + "</tr>";
+                        $('#tbl_PFDtls').append(th);
+
+                        var i = 0; var sumMonthlyBasic = 0; var sumEmprcontr = 0; var sumEmpcont1 = 0; var sumEmpcont2 = 0;
+                        $.each(DataPFDtls, function (key, item) {
+                            i += 1;
+                            $('#tbl_PFDtls').append("<tr>"
+                             + "<td align='center'>" + i + "</td>"
+                             + "<td align='center'>" + item.AEMSalMonth + "</td>"
+                             + "<td align='center'>" + item.Basic + "</strong></td>"
+                             + "<td align='center'>" + item.EmployerContribution_833 + "</td>"
+                             + "<td align='center'>" + item.EmployerContribution_367 + "</td>"
+                             + "<td align='center'>" + item.EmployeeContribution + "</td>"
+                             + "</tr>");
+
+                            sumMonthlyBasic = (sumMonthlyBasic * 1) + (item.Basic * 1)
+                            sumEmprcontr = (sumEmprcontr * 1) + (item.EmployerContribution_833 * 1)
+                            sumEmpcont1 = (sumEmpcont1 * 1) + (item.EmployerContribution_367 * 1)
+                            sumEmpcont2 = (sumEmpcont2 * 1) + (item.EmployeeContribution * 1)
+                        });
+
+
+                        var frow2 = '<tr id="ftrPF">'
+                            + '<td colspan="2" align="center"><b>Total</b></td>'
+                            + '<td align="center"><strong>' + sumMonthlyBasic + '</strong></td>'
+                            + '<td align="center"><strong>' + sumEmprcontr + '</strong></td>'
+                            + '<td align="center"><strong>' + sumEmpcont1 + '</strong></td>'
+                            + '<td align="center"><strong>' + sumEmpcont2 + '</strong></td>'
+                            + '</tr>';
+
+                        $('#tbl_PFDtls').append(frow2);
+
+                        if (i == 0) {
+                            $('#tbl_PFDtls').append('<tr><td colspan="5" align="center">No Records Found</></tr>');
+                            $('#ftrPF').hide();
+                        }
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+            //------Ends PF Here-----
+
+            //----------------Get Professional Tax-------------
+
+            function GetPTData() {
+
+                var UrlPtax = $('#hdnUrlPT').val();
+
+                var PTD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045',
+                    Year: $('#ddlPTaxFinYear option:selected').text(),
+                    Month: $('#ddlPTaxMonth option:selected').text() == 'All Month' ? '%' : $('#ddlPTaxMonth option:selected').text()
+
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: UrlPtax,
+                    url: $('#hdnApiUrl').val() + 'api/Statutory/GetProfessionalTax',
+                    data: PTD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        var DataPTaxDtls = JSON.parse(data);
+                        console.log(data);
+                        $('#dvPtax').show();
+                        $('#tblPtax').empty();
+                        var th = "<tr>"
+                                + "<th><b>Sl No</b></th>"
+                                + "<th><b>Month</b></th>"
+                                //+ "<th><b>MonthlyGross</b></th>"
+                                + "<th><b>PT</b></th>"
+                                + "</tr>";
+                        $('#tblPtax').append(th);
+
+                        var i = 0; var sumPT = 0;
+                        $.each(DataPTaxDtls, function (key, item) {
+                            i += 1;
+                            $('#tblPtax').append("<tr>"
+
+                             + "<td align='center'>" + i + "</td>"
+                             + "<td align='center'>" + item.MonthName + "</td>"
+                             //+ "<td align='center'>" + item.MonthlyGross + "</td>"
+                             + "<td align='center'>" + item.EmpPT + "</td>"
+
+                             + "</tr>");
+
+                            sumPT = (sumPT * 1) + (item.EmpPT * 1)
+
+                        });
+
+                        var frow1 = '<tr id="ftrPT">'
+                            + '<td colspan="2"><b>Total</></td>'
+                            + '<td ><strong>' + sumPT + '</strong></td>'
+                            + '</tr>';
+
+                        $('#tblPtax').append(frow1);
+
+                        if (i == 0) {
+                            $('#tblPtax').append('<tr><td colspan="5" align="center">No Records Found</></tr>');
+                            $('#ftrPT').hide();
+                        }
+
+                    },
+
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+
+            }
+
+            //--Ends PT Here=============
+
+
+            //IT View First Part
+
+            function GetItViewLeft() {
+                //debugger;
+
+                var hdnITVwLeft = $('#hdnUrlITViewLeft').val();
+                var ITLeftD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: "http://172.16.0.138/WebAPIForPayroll/api/IT/GetItViewLeft",
+                    url: hdnITVwLeft,
+                    data: ITLeftD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        // alert(data);
+                        console.log(data);
+                        var DataITViewLeftDtls = JSON.parse(data);
+                        $('#tbl_itViewLeft').empty();
+
+                        var i = 0;
+                        $.each(DataITViewLeftDtls, function (key, item) {
+                            i += 1;
+                            $('#tbl_itViewLeft').append("<tr>"
+                             + "<td align='left'>" + item.componentName + "</td>"
+                             + "<td align='right'>" + item.value + "</td>"
+
+                             + "</tr>");
+                        });
+                        if (i == 0) {
+                            $('#tbl_itViewLeft').append('<tr><td colspan="5" align="center">No Records Found</></tr>');
+                        }
+
+                        GetITViewRight();
+                        GetHeader();
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+
+
+            //------IT View Second Part----------
+
+            function GetITViewRight() {
+                var hdnITVwR = $('#hdnUrlITViewRight').val();
+
+                var ITRightD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: "http://172.16.0.138/WebAPIForPayroll/api/IT/GetItViewRight",
+                    url: hdnITVwR,
+                    data: ITRightD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+
+                        var DataITViewRightDtls = JSON.parse(data);
+                        $('#tbl_itViewRight').empty();
+
+                        var i = 0;
+                        $.each(DataITViewRightDtls, function (key, item) {
+                            i += 1;
+                            $('#tbl_itViewRight').append("<tr>"
+                             + "<td align='left'>" + item.componentName + "</td>"
+                             + "<td align='right'>" + item.value + "</td>"
+
+                             + "</tr>");
+                        });
+                        if (i == 0) {
+                            $('#tbl_itViewRight').append('<tr><td colspan="5" align="center">No Records Found</></tr>');
+                        }
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+
+
+                })
+
+            }
+
+            //-Ends here----
+
+            //-----------Employee Header--------
+            function GetHeader() {
+
+                var hdnITVwH = $('#hdnUrlITViewHeader').val();
+                var ITHeaderD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: "http://172.16.0.138/WebAPIForPayroll/api/IT/GetItViewHeader",
+                    url: hdnITVwH,
+                    data: ITHeaderD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        //alert(data);
+                        var DataITHeader = JSON.parse(data);
+                        console.log(data);
+
+                        $('#lblNameIT').text(DataITHeader["Name"]);
+                        $('#lblCodeIt').text(DataITHeader["Code"]);
+                        $('#lblComp').text(DataITHeader["ClientName"]);
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+
+            }
+
+            //--Ends Here-------------
+
+            //-----Get Bank Details----------
+
+
+            function GetBankInfo() {
+
+                var hdnBank = $('#hdnURLBankDetails').val();
+                var BankD = {
+                    compname: 'ARK TECH INNOVATION PRIVATE LIMITED',
+                    EmpId: '2070000045'
+                }
+
+                $.ajax({
+
+                    type: "GET",
+                    //url: hdnBank,
+                    url: $('#hdnApiUrl').val() + 'api/Statutory/GetBankDetails',
+                    data: BankD,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        //alert(data);
+                        var DataBankdtls = JSON.parse(data);
+                        console.log(data);
+
+                        $('#lblBname').text(DataBankdtls["BankName"] == null ? 'N/A' : DataBankdtls["BankName"]);
+                        $('#lblBaccNo').text(DataBankdtls["BankAccNo"] == null ? 'N/A' : DataBankdtls["BankAccNo"]);
+                        $('#lblIFSC').text(DataBankdtls["IFSC"] == null ? 'N/A' : DataBankdtls["IFSC"]);
+
+                    },
+
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+
+                })
+            }
+
+            //---Ends Bank Details here
+
+        });
+
+
+    </script>
+
+    
+<link href="./GeniusEAM _ Payroll Activity_files/animation.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/pickmeup.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/newStyle.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/jodit.min.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/dataTables.bootstrap.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/morris-0.4.3.min.css" type="text/css" rel="stylesheet"><link href="./GeniusEAM _ Payroll Activity_files/style-cazary.css" type="text/css" rel="stylesheet"></head>
+<body onload="disableBackButton()" class="modal-open">
+    <form name="aspnetForm" method="post" action="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm" enctype="multipart/form-data">
+<div>
+<input type="hidden" name="ctl00_ts1_HiddenField" id="ctl00_ts1_HiddenField" value=";;AjaxControlToolkit, Version=3.5.40412.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e:en-US:1547e793-5b7e-48fe-8490-03a375b13a33:de1feab2:f9cec9bc:a67c2700:f2c8e708:8613aea7:3202a5a2:ab09e3fe:87104b7c:be6fb298">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./GeniusEAM _ Payroll Activity_files/WebResource.axd" type="text/javascript"></script>
+
+
+<script src="./GeniusEAM _ Payroll Activity_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./GeniusEAM _ Payroll Activity_files/ScriptResource(1).axd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="./GeniusEAM _ Payroll Activity_files/ScriptResource(2).axd" type="text/javascript"></script>
+<script src="./GeniusEAM _ Payroll Activity_files/PayrollActivity.aspx" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="643AC667">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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">
+</div>
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ts1', 'aspnetForm', ['tctl00$upChangePwd',''], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+        <div id="navbar-wrapper">
+            <header>
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                                <span>
+                                    
+                                  <div class="companyName">ARK TECH INNOVATION PRIVATE LIMITED</div>
+                                      </a>
+                        </div>
+                        <div id="navbar-collapse" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                <!-- /.dropdown -->
+                              <li class="dropdown" style="display:none">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#" aria-expanded="false">
+                                        <i class="fa fa-link"></i>Quick Link<i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul id="ctl00_quicklink" class="dropdown-menu dropdown-alerts">
+                                      <li><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SelfAttendance/HierarchyView.aspx">Approver Hierarchy</a></li>
+                                         
+                                         <li><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/GatePass/GLAPGatePassAdd.aspx">On Duty Application</a></li>
+                                         <li><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/GatePass/GLAPGatePassApproval.aspx">On Duty Approval</a></li>
+                                       
+                                    </ul>
+                                </li>
+                               
+                                <!-- /.dropdown -->
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#" aria-expanded="false">
+                                        <i class="fa fa-user fa-fw"></i>Account<i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/GHRMSExistingEmployeeUpdatenew.aspx"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                                        </li>
+                                        <li><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#login_form" class="blue-btn"><i class="fa fa-key"></i>Change Password</a>
+                                        </li>
+                                        <li>
+                                            
+
+                                            <a class="blue-btn" href="javascript:__doPostBack(&#39;ctl00$ctl12&#39;,&#39;&#39;)"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /.dropdown-user -->
+                                </li>
+                                <!-- /.dropdown -->
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        </div>
+                    
+
+
+        <div id="ctl00_ContentPlaceHolder1_ModalPopupExtender1_backgroundElement" class="ModalPopupBG" style="display: none; position: fixed; left: 0px; top: 0px;"></div></div>
+
+
+        
+
+        <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: block;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabel">Payslip<span id="srno"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="ctl00_ContentPlaceHolder1_divSalh" class="table-responsive">
+                            <p style="width: 100%; text-align: left; font-size: 10pt; margin-left: 2em; margin-top: 0">
+                                <strong>
+                                    </strong>
+                            </p>
+                            <p>
+                                <span id="ctl00_ContentPlaceHolder1_lblSH"></span>
+                            </p>
+                            <table width="90%" border="0" cellpadding="0" cellspacing="0" align="center" class="table table-bordered vlin" style="max-width: 600px">
+                                <tbody><tr>
+                                    <th style="text-align: right">Financial Year
+                                    </th>
+                                    <th align="center" colspan="2">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlSalFinYear" id="ddlSalFinYear" class="salHistory form-control">
+	<option value="10">2014-2015</option>
+	<option value="11">2015-2016</option>
+	<option value="12">2016-2017</option>
+	<option value="13">2017-2018</option>
+	<option value="14">2018-2019</option>
+	<option value="15">2019-2020</option>
+	<option value="16">2020-2021</option>
+	<option value="17">2021-2022</option>
+	<option value="18">2022-2023</option>
+	<option value="19">2023-2024</option>
+	<option value="20">2024-2025</option>
+	<option selected="selected" value="21">2025-2026</option>
+	<option value="22">2026-2027</option>
+	<option value="23">2027-2028</option>
+	<option value="24">2028-2029</option>
+	<option value="25">2029-2030</option>
+
+</select>
+                                    </th>
+                                    <th style="text-align: right">Month
+                                    </th>
+                                    <th align="center">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlSalMonth" id="ddlSalMonth" class="salHistory form-control">
+	<option selected="selected" value="%">All Month</option>
+	<option value="1">JANUARY</option>
+	<option value="2">FEBRUARY</option>
+	<option value="3">MARCH</option>
+	<option value="4">APRIL</option>
+	<option value="5">MAY</option>
+	<option value="6">JUNE</option>
+	<option value="7">JULY</option>
+	<option value="8">AUGUST</option>
+	<option value="9">SEPTEMBER</option>
+	<option value="10">OCTOBER</option>
+	<option value="11">NOVEMBER</option>
+	<option value="12">DECEMBER</option>
+
+</select>
+                                    </th>
+                                </tr>
+                            </tbody></table>
+
+
+                            
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        
+
+        <div class="modal fade" id="myModalPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelPT">PT<span id="srnoPT"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="ctl00_ContentPlaceHolder1_divPtax">
+                            <p style="width: 100%; text-align: left; font-size: 10pt; margin-left: 2em; margin-top: 0">
+                                <strong>
+                                    </strong>
+                            </p>
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="table table-bordered vlin" style="max-width: 600px;">
+                                <tbody><tr>
+                                    <th style="text-align: right">Financial Year
+                                    </th>
+                                    <th align="center" colspan="2">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlPTaxFinYear" id="ddlPTaxFinYear" class="cptax form-control">
+	<option value="10">2014-2015</option>
+	<option value="11">2015-2016</option>
+	<option value="12">2016-2017</option>
+	<option value="13">2017-2018</option>
+	<option value="14">2018-2019</option>
+	<option value="15">2019-2020</option>
+	<option value="16">2020-2021</option>
+	<option value="17">2021-2022</option>
+	<option value="18">2022-2023</option>
+	<option value="19">2023-2024</option>
+	<option value="20">2024-2025</option>
+	<option selected="selected" value="21">2025-2026</option>
+	<option value="22">2026-2027</option>
+	<option value="23">2027-2028</option>
+	<option value="24">2028-2029</option>
+	<option value="25">2029-2030</option>
+
+</select>
+                                    </th>
+                                    <th style="text-align: right">Month
+                                    </th>
+                                    <th align="center">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlPTaxMonth" id="ddlPTaxMonth" class="cptax form-control">
+	<option selected="selected" value="%">All Month</option>
+	<option value="1">JANUARY</option>
+	<option value="2">FEBRUARY</option>
+	<option value="3">MARCH</option>
+	<option value="4">APRIL</option>
+	<option value="5">MAY</option>
+	<option value="6">JUNE</option>
+	<option value="7">JULY</option>
+	<option value="8">AUGUST</option>
+	<option value="9">SEPTEMBER</option>
+	<option value="10">OCTOBER</option>
+	<option value="11">NOVEMBER</option>
+	<option value="12">DECEMBER</option>
+
+</select>
+                                    </th>
+                                </tr>
+                            </tbody></table>
+
+                            <div id="dvPtax" style="height: 300px; overflow: auto;">
+
+                                <div class="text-center modalBg">
+
+                                    <table id="tblPtax" cellpadding="2" cellspacing="2" border="1" width="100%" class="table table-bordered table-striped" style="margin: 0 auto; max-width: 800px;"><tbody><tr><th><b>Sl No</b></th><th><b>Month</b></th><th><b>PT</b></th></tr><tr><td align="center">1</td><td align="center">APRIL</td><td align="center">0</td></tr><tr><td align="center">2</td><td align="center">MAY</td><td align="center">0</td></tr><tr><td align="center">3</td><td align="center">JUNE</td><td align="center">0</td></tr><tr><td align="center">4</td><td align="center">JULY</td><td align="center">0</td></tr><tr><td align="center">5</td><td align="center">AUGUST</td><td align="center">0</td></tr><tr id="ftrPT"><td colspan="2"><b>Total</b></td><td><strong>0</strong></td></tr></tbody></table>
+                                </div>
+
+
+                            </div>
+
+
+                            <p style="width: 100%; color: Red; text-align: center">
+                                
+                            </p>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        
+
+        <div class="modal fade in" id="myModalPayslip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: block;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelPayslip">PaySlip<span id="srnoPayslip"></span></h4>
+                    </div>
+                    <div class="modal-body" id="dvPayPrint">
+
+                        <table border="1" cellpadding="7" class="table table-bordered" width="622">
+
+                            <tbody><tr>
+                                <td align="center" width="30%">
+                                    <img id="Image2" src="https://s94-ious.freeconvert.com/task/68c99889f858a5797f10f589/download.jpeg">
+                                </td>
+                                <td align="left" width="70%">
+                                    <h4>
+                                        <span id="lblClientName">ARK TECH INNOVATION PRIVATE LIMITED</span></h4>
+                                    <h5>
+                                        <span id="lblClientOffAddress">A-11 &amp; 12, Block A, Sector 4, Noida, Uttar Pradesh 201301</span>
+                                        <br>
+                                        <strong>WebSite:</strong>
+                                        <span id="lblWesite">www.arkinfo.in</span>
+                                        <strong>Tel.:</strong><span id="lblContactNo"></span>
+
+                                    </h5>
+                                    Pay-Slip For The Month Of :&nbsp;<strong><span id="lblMonth">August</span>&nbsp;<span id="lblYear">2024</span></strong>
+                                </td>
+
+                            </tr>
+                        </tbody></table>
+
+                        <table border="1" cellpadding="7" class="table table-bordered noBorder" width="622">
+                            <tbody><tr>
+                                <td width="25%"><strong>Employee Name:</strong></td>
+                                <td width="25%">
+                                    <span id="lblEmpName">SOURAV KUMAR</span></td>
+                                <td width="25%"><strong>Employee Code:</strong></td>
+                                <td width="25%">
+                                    <span id="lblCode">4033</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bank Name:</strong></td>
+                                <td>
+                                    <span id="lblBankName">KOTAK MAHINDRA BANK LIMITED</span></td>
+                                <td><strong>DOJ:</strong></td>
+                                <td>
+                                    <span id="lblDOJ">01 Jul 2024</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bank Ac/No.:</strong></td>
+                                <td>
+                                    <span id="lblAcNo">55555555555</span></td>
+                                <td><strong>Department:</strong></td>
+                                <td>
+                                    <span id="lblDept">4444444444</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>PF No.:</strong></td>
+                                <td>
+                                    <span id="lblPF">000000000000</span></td>
+                                <td><strong>Designation:</strong></td>
+                                <td>
+                                    <span id="lblDesg">1111111111</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Location:</strong></td>
+                                <td>
+                                    <span id="lblLocation">NOIDA-005</span></td>
+                                <td><strong>PAN:</strong></td>
+                                <td>
+                                    <span id="lblPan">3333333333333333</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ESIC No.:</strong></td>
+                                <td>
+                                    <span id="lblESIC">N/A</span></td>
+                                <td><strong>UAN:</strong></td>
+                                <td>
+                                    <span id="lblUAN">22222222</span></td>
+
+                            </tr>
+                            <tr>
+                                <td><strong>Brand Name:</strong></td>
+                                <td>
+                                    <span id="lblBrand">0.0000</span>
+                                </td>
+                                <td><strong>Arrear Days:</strong></td>
+                                <td>
+                                    <span id="lblArr">0.00</span>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td><strong>Payable Days:</strong></td>
+                                <td>
+                                    <span id="lblPaybleDays">31.00</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                        </tbody></table>
+
+
+                        <table border="1" cellpadding="7" class="table table-bordered table1" width="622">
+                            <tbody><tr>
+                                <td width="50%" class="nopad" style="background: #ECECEC;">
+                                    <table id="Table18" class="table3" width="100%">
+
+                                        <tbody><tr>
+                                            <th width="40%">EARNINGS</th>
+                                            <th width="30%" style="text-align: right;">GROSS AMT.(Rs.)</th>
+                                            <th style="text-align: right;">ACTUAL AMT.(Rs.)</th>
+
+                                        </tr>
+
+                                    </tbody></table>
+
+                                </td>
+
+                                <td width="35%" class="nopad" style="background: #ECECEC;">
+
+
+
+                                    <table id="Table19" class="table3" width="100%">
+
+                                        <tbody><tr>
+                                            <th>DEDUCTIONS</th>
+                                            <th style="text-align: right;">AMT.(Rs.)</th>
+                                        </tr>
+
+                                    </tbody></table>
+
+                                </td>
+
+                                <td width="15%" class="nopad" style="background: #ECECEC;">
+                                    <table width="100%" class="tabval">
+                                        <tbody><tr>
+                                            <th style="text-align: right;">NET AMT.(Rs.)</th>
+                                        </tr>
+                                    </tbody></table>
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+
+                        <table border="1" cellpadding="7" class="table table-bordered table1" width="622">
+                            <tbody><tr>
+                                <td width="50%" class="nopad">
+
+                                    <table id="tblSalHeadDtls" width="100%" class="tabval table3"><tbody><tr><td width="40%">BASIC SALARY</td><td width="30%" align="right">666666</td><td align="right">666666</td></tr><tr><td width="40%">HRA</td><td width="30%" align="right">77777777</td><td align="right">77777777</td></tr><tr><td width="40%">TRANSPORT ALLOWANCE</td><td width="30%" align="right">888888</td><td align="right">888888</td></tr><tr><td width="40%">CITY COMPENSATORY ALLOWANCE</td><td width="30%" align="right">9999</td><td align="right">9999</td></tr><tr><td width="40%">SPECIAL ALLOWANCE</td><td width="30%" align="right">101010</td><td align="right">101010</td></tr></tbody></table>
+                                </td>
+                                <td width="35%" class="nopad" valign="top">
+
+                                    <table id="tblDeduction" width="100%" class="tabval table3"><tbody><tr><td>PF EMPLOYEE</td><td align="right">1800.00</td></tr><tr><td>IT</td><td align="right">0.00</td></tr></tbody></table>
+
+
+                                </td>
+                                <td width="15%" class="nopad"></td>
+                            </tr>
+                        </tbody></table>
+
+
+
+
+
+
+                        <table border="1" cellpadding="7" class="table table-bordered table1 table2" width="622">
+                            <tbody><tr>
+                                <th width="50%">
+                                    <table id="Table24" width="100%" class="table3">
+
+                                        <tbody><tr>
+                                            <th width="40%" style="text-align: left;">Total</th>
+                                            <th width="30%" style="text-align: right;">
+
+
+                                                <span id="lblMonthlyGross">11,11,11</span>
+
+
+                                            </th>
+                                            <th width="30%" style="text-align: right;">
+                                                <span id="lblActualGross">11,11,11</span></th>
+
+                                        </tr>
+
+                                    </tbody></table>
+                                </th>
+                                <th width="35%">
+
+
+                                    <table id="Table25" width="100%" class="table3">
+
+                                        <tbody><tr>
+                                            <th></th>
+                                            <th style="text-align: right;">
+
+                                                <span id="lblTotalDeduction">1800.00</span>
+
+
+                                            </th>
+                                        </tr>
+
+                                    </tbody></table>
+
+                                </th>
+                                <th width="15%">
+                                    <table id="Table26" width="100%" border="0" class="table3">
+
+                                        <tbody><tr>
+                                            <th style="text-align: right;">
+
+                                                <span id="lblMonthlyNet">0</span></th>
+                                        </tr>
+
+                                    </tbody></table>
+                                </th>
+                            </tr>
+
+
+                        </tbody></table>
+
+
+                        <table border="1" cellpadding="7" class="table table-bordered table1 table2" width="622">
+                            <tbody><tr>
+                                <td colspan="3">
+                                    <strong>
+                                        <span id="lblMonthlyNetinwords">INR Fifty-Seven Thousand One Hundred And Fifty-Eight Only</span></strong></td>
+                            </tr>
+                        </tbody></table>
+
+                        <table border="0" cellpadding="7" class="table table-bordered table1 table2" width="622">
+                            <tbody><tr>
+                                <td align="center">
+                                    <p class="text-center">*This is a system generated statement, no signature is required.</p>
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" id="btnPrint" onclick="javascript: PrintPaySlip();" class="btn btn-primary">Print</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        
+
+        <div class="modal fade" id="myModalPF" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelPF">PF<span id="srnoPF"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="ctl00_ContentPlaceHolder1_divPFStatement" class="table table-responsive">
+                            
+                            <p style="text-align: left; color: Red; margin-left: 2em">
+                                
+                            </p>
+
+                            <table width="90%" class="table table-bordered vlin" border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 600px;">
+                                <tbody><tr>
+                                    <th width="150" style="text-align: right;">Financial Year
+                                    </th>
+                                    <th>
+                                        <select name="ctl00$ContentPlaceHolder1$ddlPFFYear" id="ddlPFFYear" class="cpfDtls form-control">
+	<option value="10">2014-2015</option>
+	<option value="11">2015-2016</option>
+	<option value="12">2016-2017</option>
+	<option value="13">2017-2018</option>
+	<option value="14">2018-2019</option>
+	<option value="15">2019-2020</option>
+	<option value="16">2020-2021</option>
+	<option value="17">2021-2022</option>
+	<option value="18">2022-2023</option>
+	<option value="19">2023-2024</option>
+	<option value="20">2024-2025</option>
+	<option selected="selected" value="21">2025-2026</option>
+	<option value="22">2026-2027</option>
+	<option value="23">2027-2028</option>
+	<option value="24">2028-2029</option>
+	<option value="25">2029-2030</option>
+
+</select>
+                                    </th>
+
+                                    <th width="150" style="text-align: right;">Month
+                                    </th>
+                                    <th>
+                                        <select name="ctl00$ContentPlaceHolder1$ddlPFMonth" id="ddlPFMonth" class="cpfDtls form-control">
+	<option selected="selected" value="%">All Month</option>
+	<option value="1">JANUARY</option>
+	<option value="2">FEBRUARY</option>
+	<option value="3">MARCH</option>
+	<option value="4">APRIL</option>
+	<option value="5">MAY</option>
+	<option value="6">JUNE</option>
+	<option value="7">JULY</option>
+	<option value="8">AUGUST</option>
+	<option value="9">SEPTEMBER</option>
+	<option value="10">OCTOBER</option>
+	<option value="11">NOVEMBER</option>
+	<option value="12">DECEMBER</option>
+
+</select>
+                                    </th>
+                                </tr>
+                            </tbody></table>
+
+                            <div id="dvPFdtls" style="height: 300px; padding: 0px 15px; overflow: auto;">
+                                <table id="tbl_PFDtls" cellpadding="2" cellspacing="2" border="1" width="100%" class="table table-bordered table-striped"><tbody><tr><th><b>Sl No</b></th><th><b>Month</b></th><th><b>Permissible</b></th><th><b>Employer Contribution - Pension -(8.33%)</b></th><th><b>Employer Contribution - PF –(3.67%)</b></th><th><b>Employee Contribution (12%)</b></th></tr><tr><td align="center">1</td><td align="center">April</td><td align="center">15000</td><td align="center">1250</td><td align="center">550</td><td align="center">1800</td></tr><tr><td align="center">2</td><td align="center">May</td><td align="center">15000</td><td align="center">1250</td><td align="center">550</td><td align="center">1800</td></tr><tr><td align="center">3</td><td align="center">June</td><td align="center">15000</td><td align="center">1250</td><td align="center">550</td><td align="center">1800</td></tr><tr><td align="center">4</td><td align="center">July</td><td align="center">15000</td><td align="center">1250</td><td align="center">550</td><td align="center">1800</td></tr><tr><td align="center">5</td><td align="center">August</td><td align="center">15000</td><td align="center">1250</td><td align="center">550</td><td align="center">1800</td></tr><tr id="ftrPF"><td colspan="2" align="center"><b>Total</b></td><td align="center"><strong>75000</strong></td><td align="center"><strong>6250</strong></td><td align="center"><strong>2750</strong></td><td align="center"><strong>9000</strong></td></tr></tbody></table>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="modal fade" id="myModalESI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelESI"><span id="srnoESI"></span>ESI</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="ctl00_ContentPlaceHolder1_divESI" class="table table-responsive" style="max-height: 500px; min-height: 100%; overflow: auto">
+                            
+                            <br>
+                            <table width="90%" class="table table-bordered vlin" border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 600px;">
+                                <tbody><tr>
+                                    <th width="150" style="text-align: right;">Financial Year
+                                    </th>
+                                    <th>
+                                        <select name="ctl00$ContentPlaceHolder1$ddlESIFinYear" id="ddlESIFinYear" class="ESIDtls form-control">
+	<option value="10">2014-2015</option>
+	<option value="11">2015-2016</option>
+	<option value="12">2016-2017</option>
+	<option value="13">2017-2018</option>
+	<option value="14">2018-2019</option>
+	<option value="15">2019-2020</option>
+	<option value="16">2020-2021</option>
+	<option value="17">2021-2022</option>
+	<option value="18">2022-2023</option>
+	<option value="19">2023-2024</option>
+	<option value="20">2024-2025</option>
+	<option selected="selected" value="21">2025-2026</option>
+	<option value="22">2026-2027</option>
+	<option value="23">2027-2028</option>
+	<option value="24">2028-2029</option>
+	<option value="25">2029-2030</option>
+
+</select>
+                                    </th>
+
+                                    <th width="150" style="text-align: right;">Month
+                                    </th>
+                                    <th>
+                                        <select name="ctl00$ContentPlaceHolder1$ddlESIMonth" id="ddlESIMonth" class="ESIDtls form-control">
+	<option selected="selected" value="%">All Month</option>
+	<option value="1">JANUARY</option>
+	<option value="2">FEBRUARY</option>
+	<option value="3">MARCH</option>
+	<option value="4">APRIL</option>
+	<option value="5">MAY</option>
+	<option value="6">JUNE</option>
+	<option value="7">JULY</option>
+	<option value="8">AUGUST</option>
+	<option value="9">SEPTEMBER</option>
+	<option value="10">OCTOBER</option>
+	<option value="11">NOVEMBER</option>
+	<option value="12">DECEMBER</option>
+
+</select>
+                                    </th>
+                                </tr>
+                            </tbody></table>
+                            <div id="dvESIdtls" style="height: 300px; overflow: auto;">
+
+                                <table id="tbl_ESIDtls" cellpadding="2" cellspacing="2" border="1" width="100%" class="table table-bordered table-striped"><tbody><tr><th><b>Sl No</b></th><th><b>Month</b></th><th><b>Permissible</b></th><th><b>Employer Contribution (4.75%)</b></th><th><b>Employee Contribution (1.75%)</b></th></tr><tr><td align="center">1</td><td align="center">April</td><td align="center">0</td><td align="center">0</td><td align="center">0</td></tr><tr><td align="center">2</td><td align="center">May</td><td align="center">0</td><td align="center">0</td><td align="center">0</td></tr><tr><td align="center">3</td><td align="center">June</td><td align="center">0</td><td align="center">0</td><td align="center">0</td></tr><tr><td align="center">4</td><td align="center">July</td><td align="center">0</td><td align="center">0</td><td align="center">0</td></tr><tr><td align="center">5</td><td align="center">August</td><td align="center">0</td><td align="center">0</td><td align="center">0</td></tr><tr id="ftrsum"><td colspan="2" align="center"><b>Total</b></td><td align="center"><strong>0</strong></td><td align="center"><strong>0</strong></td><td align="center"><strong>0</strong></td></tr></tbody></table>
+
+                            </div>
+                            <p style="width: 100%; color: Red; text-align: center">
+                                
+                            </p>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="modal fade" id="myModalBank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelBank">Bank Details<span id="srnoBank"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table id="tbl_BankDtls" class="table table-bordered table-striped" style="margin: 0 auto; width: 600px;">
+                            <tbody><tr>
+                                <td width="50%"><strong>Bank Name</strong></td>
+                                <td>
+                                    <span id="lblBname"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Account No.</strong></td>
+                                <td>
+                                    <span id="lblBaccNo"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IFSC</strong></td>
+                                <td>
+                                    <span id="lblIFSC"></span></td>
+                            </tr>
+                        </tbody></table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="modal fade" id="myModalCurrentCTCMaster" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelCurrentCTCMaster">Current CTC<span id="srnoCurrentCTCMaster"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="ctl00_ContentPlaceHolder1_divCCTC">
+                            <p style="float: left; margin-left: 1em">
+                                <span id="ctl00_ContentPlaceHolder1_Label1" style="color:Red;"></span>
+                            </p>
+
+                            <table id="tblCTC" cellpadding="2" cellspacing="2" border="1" class="table table-bordered table-striped" style="max-width: 600px; margin: 0 auto;"><tbody><tr><th><b>Effective Date</b></th><th><b>Monthly CTC</b></th></tr><tr><td align="center" style="display:none">3130000137</td><td align="center">01 Apr 2025</td><td align="center"><a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx" class="ctclink" id="cpop" style="text-decoration:underline;">84492.00</a></td></tr></tbody></table>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="modal fade" id="myModalCTCdetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelCTCdetails">Gross Salary Details<span id="srnoCTCdetails"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" style="max-width: 800px; margin: 0 auto;">
+                            <tbody><tr>
+                                <th width="25%"><strong>Employee Name:</strong></th>
+                                <td width="25%">
+                                    <span id="lblNameC">SOURAV KUMAR</span></td>
+                                <th width="25%"><strong>Employee Code:</strong></th>
+                                <td width="25%">
+                                    <span id="lblCodeC">4033</span></td>
+                            </tr>
+                            <tr>
+                                <th><strong>Place of Posting:</strong></th>
+                                <td>
+                                    <span id="lblPostingC">NOIDA-005</span></td>
+                                <th><strong>Date of Joining:</strong></th>
+                                <td>
+                                    <span id="lblDojC">01 Jul 2024</span></td>
+                            </tr>
+                            <tr>
+                                <th><strong>Department:</strong></th>
+                                <td>
+                                    <span id="lblDeptC">ICT360</span></td>
+                                <th><strong>Designation:</strong></th>
+                                <td>
+                                    <span id="lblDesgC">1111111111</span></td>
+                            </tr>
+                            <tr>
+                                <th><strong>Effective Date:</strong></th>
+                                <td>
+                                    <span id="lblCtceffdate">01 Apr 2025</span></td>
+                                <th></th>
+                                <td>
+                                    </td>
+                            </tr>
+                        </tbody></table>
+                        <table id="tbl_ParticulrsComp" class="table table-bordered table-striped" style="max-width: 800px; margin: 0 auto;">
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="modal fade" id="myModalReim" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelReim">Reimbursement Details<span id="srnoReim"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div id="ctl00_ContentPlaceHolder1_dvReimMaster" class="table-responsive">
+                            <p style="width: 100%; text-align: left; font-size: 10pt; margin-left: 2em; margin-top: 0">
+                                <strong>
+                                    </strong>
+                            </p>
+                            <p>
+                                <span id="ctl00_ContentPlaceHolder1_Label2"></span>
+                            </p>
+                            <table width="90%" border="0" cellpadding="0" cellspacing="0" align="center" class="table table-bordered vlin" style="max-width: 600px;">
+                                <tbody><tr>
+                                    <th align="center">Financial Year
+                                    </th>
+                                    <th align="center" colspan="2">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlReimYear" id="ddlReimYear" class="clsreim form-control">
+	<option value="10">2014-2015</option>
+	<option value="11">2015-2016</option>
+	<option value="12">2016-2017</option>
+	<option value="13">2017-2018</option>
+	<option value="14">2018-2019</option>
+	<option value="15">2019-2020</option>
+	<option value="16">2020-2021</option>
+	<option value="17">2021-2022</option>
+	<option value="18">2022-2023</option>
+	<option value="19">2023-2024</option>
+	<option value="20">2024-2025</option>
+	<option selected="selected" value="21">2025-2026</option>
+	<option value="22">2026-2027</option>
+	<option value="23">2027-2028</option>
+	<option value="24">2028-2029</option>
+	<option value="25">2029-2030</option>
+
+</select>
+                                    </th>
+                                    <th align="center">Month
+                                    </th>
+                                    <th align="center">
+                                        <select name="ctl00$ContentPlaceHolder1$ddlreimMonth" id="ddlreimMonth" class="clsreim form-control">
+	<option selected="selected" value="%">All Month</option>
+	<option value="1">JANUARY</option>
+	<option value="2">FEBRUARY</option>
+	<option value="3">MARCH</option>
+	<option value="4">APRIL</option>
+	<option value="5">MAY</option>
+	<option value="6">JUNE</option>
+	<option value="7">JULY</option>
+	<option value="8">AUGUST</option>
+	<option value="9">SEPTEMBER</option>
+	<option value="10">OCTOBER</option>
+	<option value="11">NOVEMBER</option>
+	<option value="12">DECEMBER</option>
+
+</select>
+                                    </th>
+                                </tr>
+                            </tbody></table>
+
+
+                            <div id="DvReim" style="height: 300px; overflow: auto;">
+
+                                <div class="text-center modalBg">
+
+                                    <table id="tblReim" cellpadding="2" cellspacing="2" border="1" width="100%" class="table table-bordered table-striped"><tbody><tr><th><b>Sl No</b></th><th><b>Month</b></th><th><b>Reim Amount</b></th></tr><tr><td colspan="5">No Records Found</td></tr></tbody></table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+
+        <div class="modal fade" id="myModalReimSlip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title" id="myModalLabelReim1">Reimbursement Slip<span id="srnoPayslip1"></span></h4>
+                    </div>
+                    <div class="modal-body" id="dvReimPrint">
+
+                        <table border="1" cellpadding="7" class="table table-bordered" width="622">
+
+                            <tbody><tr>
+                                <td align="center" width="30%">
+                                  
+                                </td>
+                                <td align="left" width="70%">
+                                    <h4>
+                                        <span id="lblClientNameReim"></span></h4>
+                                    <h5>
+                                        <span id="lblClientOffAddressReim"></span>
+                                        <br>
+                                        <strong>WebSite:</strong>
+                                        <span id="lblWesiteReim"></span>
+                                        
+
+                                    </h5>
+                                    Reimbursement Slip For The Month Of :&nbsp;<strong><span id="lblMonthReim"></span>&nbsp;<span id="lblYearReim"></span></strong>
+                                </td>
+
+                            </tr>
+                        </tbody></table>
+
+                        <table border="1" cellpadding="7" class="table table-bordered noBorder" width="622">
+                            <tbody><tr>
+                                <td width="25%"><strong>Employee Name:</strong></td>
+                                <td width="25%">
+                                    <span id="lblEmpNameReim"></span></td>
+                                <td width="25%"><strong>Employee Code:</strong></td>
+                                <td width="25%">
+                                    <span id="lblCodeReim"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bank Name:</strong></td>
+                                <td>
+                                    <span id="lblBankNameReim"></span></td>
+                                <td><strong>DOJ:</strong></td>
+                                <td>
+                                    <span id="lblDOJReim"></span></td>
+                            </tr>
+                            <tr>
+                                
+                                <td><strong>UAN:</strong></td>
+                                <td>
+                                    <span id="lblUANReim"></span></td>
+                                <td><strong>Department:</strong></td>
+                                <td>
+                                    <span id="lblDeptReim"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>PF No.:</strong></td>
+                                <td>
+                                    <span id="lblPFReim"></span></td>
+                                <td><strong>Designation:</strong></td>
+                                <td>
+                                    <span id="lblDesgReim"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Location:</strong></td>
+                                <td>
+                                    <span id="lblLocationReim"></span></td>
+                                <td></td>
+                                <td></td>
+                                
+                            </tr>
+                            
+                        </tbody></table>
+
+
+                        <table id="tblSalHeadDtlsReim" border="1" cellpadding="7" class="table table-bordered" width="622">
+                        </table>
+
+
+
+
+
+
+                        <table border="1" cellpadding="7" class="table table-bordered table1 table2" width="622">
+                            <tbody><tr>
+                                <th width="70%">
+                                    <table id="Table24" width="100%" class="table3">
+
+                                        <tbody><tr>
+                                            <th width="40%" style="text-align: left;">Total</th>
+
+                                        </tr>
+
+                                    </tbody></table>
+                                </th>
+                                <th width="30%" style="text-align: right">
+
+                                    <span id="lblTotalReim"></span>
+
+
+                                </th>
+
+                                
+                            </tr>
+                            <tr>
+                                <th colspan="2"><span id="lblMonthlyNetinwordsReim"></span></th>
+                            </tr>
+
+
+                        </tbody></table>
+
+
+
+
+                        <table border="0" cellpadding="7" class="table table-bordered table1 table2" width="622">
+                            <tbody><tr>
+                                <td align="center">
+                                    <p class="text-center">*This is a system generated statement, no signature is required.</p>
+                                </td>
+                            </tr>
+                        </tbody></table>
+
+
+                    </div>
+
+
+                    <div class="modal-footer">
+                        
+                        <button type="button" id="btnPrintReim" class="btn btn-primary">Print</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+
+                    <!-- Load jQuery, SimpleModal and Basic JS files -->
+                    <footer>
+                        <a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#" class="back-to-top" style="display: block;">
+                            <i class="fa fa-arrow-circle-up"></i>
+                        </a>
+                        <div id="ctl00_dvfooter">
+
+
+                            2018 © <a target="_blank" href="https://geniusconsultant.com/">Genius Consultants Ltd.</a>
+
+                        </div>
+                    </footer>
+                    <input type="hidden" name="ctl00$HDempID" id="ctl00_HDempID">
+                    <!-- /. PAGE INNER  -->
+
+                </div>
+
+            </div>
+        </div>
+        <div id="dialog" style="display: none"></div>
+        <!-- /. PAGE WRAPPER  -->
+        <a href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#x" class="overlay" id="login_form"></a>
+        <div class="popup" style="display: block; height: 400px; width: 400px" id="ForgotPopUp">
+            <h4>Change Password</h4>
+            <span class="error">(*)mandatory fields</span>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <span id="ctl00_CompareValidator2" style="color:Red;display:none;">Confirm Password and new password can't be different</span>
+                        <div id="ErrorLabel2" style="color: Red; display: block">
+                        </div>
+                        <span id="ctl00_Label2" style="color:Red;"></span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label>Old Password<span class="error">*</span></label>
+                        <input name="ctl00$txtOldPwd" type="password" id="ctl00_txtOldPwd" class="form-control" onchange="CheckOldPwd(this);">
+                        <span id="ctl00_rqd1" class="validation" style="color:Red;display:none;">Required.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label>New Password<span class="error">*</span></label>
+                        <input name="ctl00$txtNewPwd" type="password" id="ctl00_txtNewPwd" class="form-control"><span id="ctl00_rqd2" class="validation" style="color:Red;display:none;">Required.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label>Confirm Password<span class="error">*</span></label>
+                        <input name="ctl00$txtConfirmPwd" type="password" id="ctl00_txtConfirmPwd" class="form-control"><span id="ctl00_rqd3" class="validation" style="color:Red;display:none;">Required.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <input type="submit" name="ctl00$btnupdpwd" value="Update" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$btnupdpwd&quot;, &quot;&quot;, true, &quot;pwdvalidate&quot;, &quot;&quot;, false, false))" id="ctl00_btnupdpwd" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <i class="icon-eject"></i>
+            <span id="ctl00_lblError"></span>
+            <a class="close" href="https://cloud.geniusconsultant.com/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx#close" onclick="PopUpClose();"></a>
+            
+        </div>
+        <input type="submit" name="ctl00$lbtnSubReports" value="" id="ctl00_lbtnSubReports" style="width:0px;display: none;">
+        
+        <div id="ctl00_Panel1" style="background-color: rgb(255, 255, 255); text-align: center; width: 90%; height: 620px; vertical-align: middle; border: 1px solid gray; display: none; position: fixed;">
+	
+            <div style="border-top: solid 40px #C0C0C0; padding-top: 0px; padding-bottom: 0px">
+                <p style="float: right; margin-right: -.5em; margin-top: -3em">
+                    <input type="image" name="ctl00$ImageButton2" id="ctl00_ImageButton2" src="./GeniusEAM _ Payroll Activity_files/close_icon_48.png" style="height:34px;width:34px;border-width:0px;">
+                </p>
+                <p align="center" style="margin-bottom: 0em; margin-top: 0em">
+                    &nbsp;</p><div id="ctl00_pnl">
+		
+                        <iframe id="frameSubReports" frameborder="0" height="520px" scrolling="yes" width="90%" src="./GeniusEAM _ Payroll Activity_files/saved_resource.html"></iframe>
+                    
+	</div>
+                <p></p>
+            </div>
+        
+</div>
+        <input type="submit" name="ctl00$btnShowPopup" value="" id="ctl00_btnShowPopup" style="display: none">
+        
+
+
+
+        <div id="ctl00_PnlPreTest" class="modal-dialog" style="background-color: rgb(255, 255, 255); display: none; position: fixed;">
+	
+            <div id="ctl00_upChangePwd">
+		
+                    <input type="submit" name="ctl00$btnCloseChangePwd" value="" id="ctl00_btnCloseChangePwd" style="display: none;">
+                    <div id="ctl00_divPan" class="modal-content">
+                        <p style="float: right; margin-bottom: 1em; width: 10%; margin-top: -1.5em; margin-right: -2em">
+                            <input type="image" name="ctl00$ImageButton4" id="ctl00_ImageButton4" src="./GeniusEAM _ Payroll Activity_files/close_icon_48.png" style="height:34px;width:34px;border-width:0px;">
+                        </p>
+                        <div class="modal-header">
+
+
+
+                            <h4 class="modal-title">PAN</h4>
+                        </div>
+                        <div class="form-inline">
+                            <div class="modal-body">
+
+                                
+                                
+                                <div class="form-group">
+                                    <label>
+                                        Enter Pan</label>
+                                    <input name="ctl00$txtPan" type="text" maxlength="10" id="ctl00_txtPan" class="form-control" onblur="fnValidatePAN(this);"><span id="ctl00_rfvPAN" title="Enter Confirm Password" style="color:Red;display:none;">*</span>
+                                </div>
+                                <input type="submit" name="ctl00$btnSavePan" value="Add/Update" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$btnSavePan&quot;, &quot;&quot;, true, &quot;valPanNo&quot;, &quot;&quot;, false, false))" id="ctl00_btnSavePan" class="btn btn-success">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="alert alert-info">
+                                <strong>Note:Character length must be 10 &amp; alphanumeric only</strong>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                        <!-- /.modal-dialog -->
+                    </div>
+                
+	</div>
+        
+</div>
+
+
+        <!-- /. WRAPPER  -->
+        <!-- JS Scripts-->
+        <!-- jQuery Js -->
+        <!-- Bootstrap Js -->
+        
+
+        
+        <!-- Latest compiled JavaScript -->
+        
+       
+        <script src="./GeniusEAM _ Payroll Activity_files/jquery.bpopup.min.js.download" type="text/javascript"></script>
+        <!-- Metis Menu Js -->
+        <script src="./GeniusEAM _ Payroll Activity_files/jquery.metisMenu.js.download"></script>
+
+        <!-- Custom Js -->
+
+        <script src="./GeniusEAM _ Payroll Activity_files/custom-scripts.js.download"></script>
+
+        <script type="text/javascript" src="./GeniusEAM _ Payroll Activity_files/GenJScript.js.download"></script>
+
+     
+
+        <script type="text/javascript" src="./GeniusEAM _ Payroll Activity_files/basic.js.download"></script>
+
+
+         
+        <script type="text/javascript">
+            $(function () {
+                $('#togglePanel').click(function () {
+                    $('#wrapper #sidebar-wrapper').toggleClass('panelToggle');
+
+                    if ($('#wrapper #sidebar-wrapper').hasClass('panelToggle')) {
+                        $('#togglePanel').html('<i class="fa fa-arrow-left"></i>');
+                    }
+                    else {
+                        $('#togglePanel').html('<i class="fa fa-arrow-right"></i>');
+                    }
+
+
+                });
+
+            })
+
+        </script>
+        <script type="text/javascript">
+            $(function () {
+                var ModalHeader="IT Guidelines";
+                var fileName = "New Guidelines for Proof submission.pdf";
+                $("#lnkITguidline").click(function () {
+                    $("#dialog").dialog({
+                        modal: true,
+                        title: ModalHeader,
+                        width: 900,
+                        height: 560,
+                        buttons: {
+                            Close: function () {
+                                $(this).dialog('close');
+                            }
+                        },
+                        open: function () {
+                            var object = "<object data=\"{FileName}\" type=\"application/pdf\" width=\"860px\" height=\"435px\">";
+                            object += "If you are unable to view file, you can download from <a target = \"_blank\" href = \"{FileName}\"><b>here</b></a>";
+                            object += " or <b>download <a target = \"_blank\" href = \"http://get.adobe.com/reader/\">Adobe PDF Reader</a></b> to view the file.";
+                            object += "</object>";
+                            object = object.replace(/{FileName}/g, "../SupportingDoc/" + fileName);
+                            $("#dialog").html(object);
+                        }
+                    });
+                });
+            });
+        </script>
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_CompareValidator2"), document.getElementById("ctl00_rqd1"), document.getElementById("ctl00_rqd2"), document.getElementById("ctl00_rqd3"), document.getElementById("ctl00_rfvPAN"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_CompareValidator2 = document.all ? document.all["ctl00_CompareValidator2"] : document.getElementById("ctl00_CompareValidator2");
+ctl00_CompareValidator2.controltovalidate = "ctl00_txtConfirmPwd";
+ctl00_CompareValidator2.errormessage = "Confirm Password and new password can\'t be different";
+ctl00_CompareValidator2.display = "Dynamic";
+ctl00_CompareValidator2.validationGroup = "valChangePassword1";
+ctl00_CompareValidator2.evaluationfunction = "CompareValidatorEvaluateIsValid";
+ctl00_CompareValidator2.controltocompare = "ctl00_txtNewPwd";
+ctl00_CompareValidator2.controlhookup = "ctl00_txtNewPwd";
+var ctl00_rqd1 = document.all ? document.all["ctl00_rqd1"] : document.getElementById("ctl00_rqd1");
+ctl00_rqd1.controltovalidate = "ctl00_txtOldPwd";
+ctl00_rqd1.errormessage = "Required.";
+ctl00_rqd1.display = "Dynamic";
+ctl00_rqd1.validationGroup = "pwdvalidate";
+ctl00_rqd1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_rqd1.initialvalue = "";
+var ctl00_rqd2 = document.all ? document.all["ctl00_rqd2"] : document.getElementById("ctl00_rqd2");
+ctl00_rqd2.controltovalidate = "ctl00_txtNewPwd";
+ctl00_rqd2.errormessage = "Required.";
+ctl00_rqd2.display = "Dynamic";
+ctl00_rqd2.validationGroup = "pwdvalidate";
+ctl00_rqd2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_rqd2.initialvalue = "";
+var ctl00_rqd3 = document.all ? document.all["ctl00_rqd3"] : document.getElementById("ctl00_rqd3");
+ctl00_rqd3.controltovalidate = "ctl00_txtConfirmPwd";
+ctl00_rqd3.errormessage = "Required.";
+ctl00_rqd3.display = "Dynamic";
+ctl00_rqd3.validationGroup = "pwdvalidate";
+ctl00_rqd3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_rqd3.initialvalue = "";
+var ctl00_rfvPAN = document.all ? document.all["ctl00_rfvPAN"] : document.getElementById("ctl00_rfvPAN");
+ctl00_rfvPAN.controltovalidate = "ctl00_txtPan";
+ctl00_rfvPAN.focusOnError = "t";
+ctl00_rfvPAN.errormessage = "*";
+ctl00_rfvPAN.display = "Dynamic";
+ctl00_rfvPAN.validationGroup = "valPanNo";
+ctl00_rfvPAN.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_rfvPAN.initialvalue = "";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("ctl00_ts1_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ModalPopupBehavior, {"BackgroundCssClass":"ModalPopupBG","CancelControlID":"ctl00_ContentPlaceHolder1_imgclose","Drag":true,"PopupControlID":"ctl00_ContentPlaceHolder1_PnlPreTest","Y":65,"dynamicServicePath":"/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx","id":"ctl00_ContentPlaceHolder1_ModalPopupExtender1"}, null, null, $get("ctl00_ContentPlaceHolder1_btnShowPopup"));
+});
+
+document.getElementById('ctl00_CompareValidator2').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_CompareValidator2'));
+}
+
+document.getElementById('ctl00_rqd1').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_rqd1'));
+}
+
+document.getElementById('ctl00_rqd2').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_rqd2'));
+}
+
+document.getElementById('ctl00_rqd3').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_rqd3'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ModalPopupBehavior, {"BackgroundCssClass":"ModalPopupBG","CancelControlID":"ctl00_ImageButton2","PopupControlID":"ctl00_Panel1","dynamicServicePath":"/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx","id":"mSubReports"}, null, null, $get("ctl00_lbtnSubReports"));
+});
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ModalPopupBehavior, {"BackgroundCssClass":"ModalPopupBG","CancelControlID":"ctl00_btnCloseChangePwd","Drag":true,"PopupControlID":"ctl00_PnlPreTest","Y":65,"dynamicServicePath":"/ARKinfoSolutions/ESS/SubPages/PayrollActivity.aspx","id":"mbChangePwd"}, null, null, $get("ctl00_btnShowPopup"));
+});
+
+document.getElementById('ctl00_rfvPAN').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_rfvPAN'));
+}
+//]]>
+</script>
+
+
+
+<div id="mSubReports_backgroundElement" class="ModalPopupBG" style="display: none; position: fixed; left: 0px; top: 0px;"></div><div id="mbChangePwd_backgroundElement" class="ModalPopupBG" style="display: none; position: fixed; left: 0px; top: 0px;"></div></div></form><div class="modal-backdrop fade in"></div><div class="modal-backdrop fade in"></div></body></html>
